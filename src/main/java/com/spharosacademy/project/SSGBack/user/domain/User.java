@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 
-public class User implements UserDetail {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,57 +30,9 @@ public class User implements UserDetail {
     private String name;
     private String pwd;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-
     private String phone;
     private String email;
     private String address;
     private String gender;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
-
-    @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public String getPassword() {
-        return this.pwd;
-    }
-
-    @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public String getUsername() {
-        return this.userId;
-    }
-
-    @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public boolean isAccountNonExpired() {
-        //true는 계정이 만료되지 않았다는
-        return true;
-    }
-
-    @Override
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public boolean isAccountNonLocked() {
-        //true는 잠기지 않았다는
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isCredentialsNonExpired() {
-        //true는 잠기지 않았다는
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isEnabled() {
-        //true는 잠기지 않았다는
-        return true;
-    }
 }
