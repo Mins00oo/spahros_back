@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.jpa.springboot.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.springboot.jwt.secret."
+    },
+    {
+      "name": "spring.jpa.springboot.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.springboot.jwt.secret."
+    }
+  ] }
