@@ -4,8 +4,10 @@ import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
+
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,9 +32,10 @@ public class UserController {
     // 회원정보 조회, 토큰으로 회원조회, memberId 지움
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> findByUserId(HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
+    public Optional<User> findByUserId() {
+        String token = jwtTokenProvider.te();
 
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return userService.findByUserId(Long.valueOf(jwtTokenProvider.getUserPk(token)));
     }
 

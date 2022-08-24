@@ -63,58 +63,25 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-<<<<<<< HEAD
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-			<version>2.7.2</version>
-		</dependency>
-		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>2.7.2</version>
-		</dependency>
-        <dependency>
-            <groupId>loggly-access</groupId>
-            <artifactId>loggly-access</artifactId>
-            <version>1.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>2.0.2</version>
 		</dependency>
 		<dependency>
-			<groupId>access</groupId>
-			<artifactId>access</artifactId>
-			<version>1.0.2</version>
-			<scope>compile</scope>
-=======
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
->>>>>>> f85c0c6688bae81765f74f6bf2fa21ee7c00699b
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.2.3.Final</version>
 		</dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.2.3.Final</version>
-        </dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-client</artifactId>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -132,12 +99,5 @@
 			</plugin>
 		</plugins>
 	</build>
-    <repositories>
-        <repository>
-            <id>clojars</id>
-            <name>Clojars</name>
-            <url>https://repo.clojars.org/</url>
-        </repository>
-    </repositories>
 
 </project>

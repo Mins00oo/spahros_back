@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Component
@@ -64,6 +66,13 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
+
+    public String te() {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.currentRequestAttributes()).getRequest();
+        return request.getHeader("Authorization");
+    }
+
 
     public boolean validateToken(String jwtToken) {
         try {
