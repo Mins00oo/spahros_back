@@ -76,7 +76,7 @@ public class ProductServiceImple implements ProductService {
     private final AmazonS3Client amazonS3Client;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {CategoryNotFoundException.class})
     public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile, List<MultipartFile> detailFileList, List<MultipartFile> titleFileList)
             throws IOException {
 
@@ -97,6 +97,7 @@ public class ProductServiceImple implements ProductService {
                                 .orElseThrow(CategoryNotFoundException::new))
                         .build()
         );
+
 
         categoryProductListRepository.save(CategoryProductList.builder()
                 .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
