@@ -28,18 +28,14 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final S3UploaderService s3UploaderService;
 
     @PostMapping("/add")
     public String addProduct(
             @RequestPart(value = "productRequestDto") RequestProductDto requestProductDto,
-            @RequestPart(value = "thumbnailImg", required = false) MultipartFile multipartFile) throws IOException {
-        productService.addProduct(requestProductDto, multipartFile);
-        try {
-            s3UploaderService.upload(multipartFile, "myspharosbucket", "myDir");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @RequestPart(value = "thumbnailImg", required = false) MultipartFile multipartFile,
+            @RequestPart(value = "detailImages", required = false) List<MultipartFile> multipartFileList,
+            @RequestPart(value = "titleImages", required = false) List<MultipartFile> titleFileList) throws IOException {
+        productService.addProduct(requestProductDto, multipartFile, multipartFileList, titleFileList);
         return "상품 등록이 완료되었습니다";
     }
 

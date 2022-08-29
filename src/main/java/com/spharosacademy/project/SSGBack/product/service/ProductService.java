@@ -14,7 +14,8 @@ import java.util.List;
 
 public interface ProductService {
 
-    Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile) throws IOException;
+    Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile,
+                       List<MultipartFile> multipartFileList, List<MultipartFile> titleFileList) throws IOException;
 
     List<ResponseProductDto> getAll();
 
@@ -26,5 +27,5 @@ public interface ProductService {
 
     ResponseRecommendProductDto getRecommendProductById(Long id);
 
-    List<OutputSearchProductDto> searchProductByWord(String keyword , Pageable pageable);
+    List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable);
 }

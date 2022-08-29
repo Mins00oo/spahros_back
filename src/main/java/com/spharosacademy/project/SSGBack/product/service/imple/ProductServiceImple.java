@@ -1,8 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
@@ -40,19 +38,19 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+import com.spharosacademy.project.SSGBack.s3.DetailImageS3Dto;
+import com.spharosacademy.project.SSGBack.s3.S3ProductImageDto;
 import com.spharosacademy.project.SSGBack.s3.S3UploaderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.result.Output;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -74,10 +72,13 @@ public class ProductServiceImple implements ProductService {
     private final ReviewRepository reviewRepository;
     private final QnaRepository qnaRepository;
     private final ReviewImageRepository reviewImageRepository;
+    private final S3UploaderService s3UploaderService;
     private final AmazonS3Client amazonS3Client;
 
     @Override
-    public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile) throws IOException {
+    @Transactional
+    public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile, List<MultipartFile> detailFileList, List<MultipartFile> titleFileList)
+            throws IOException {
 
         Product product = productRepository.save(
                 Product.builder()
@@ -117,6 +118,49 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
+        S3ProductImageDto s3ProductImageDto = null;
+        DetailImageS3Dto detailImageS3Dto;
+
+        try {
+            s3ProductImageDto = s3UploaderService.upload(multipartFile, "myspharosbucket", "myDir");
+            product.setThumbnailUrl(s3ProductImageDto.getImageUrl());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (MultipartFile titleFiles : titleFileList) {
+            try {
+                detailImageS3Dto = s3UploaderService.uploadDetails(titleFiles, "myspharosbucket", "myDir");
+
+                productTitleImgRepository.save(ProductTitleImage.builder()
+                        .product(product)
+                        .productTitleImgUrl(detailImageS3Dto.getImageUrl())
+                        .productTitleImgTxt(detailImageS3Dto.getSaveFileName())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        log.info("df");
+
+        for (MultipartFile multipartFiles : detailFileList) {
+            try {
+                detailImageS3Dto = s3UploaderService.uploadDetails(multipartFiles, "myspharosbucket", "myDir");
+
+                productDetailImgRepository.save(ProductDetailImage.builder()
+                        .product(product)
+                        .productDetailImgUrl(detailImageS3Dto.getImageUrl())
+                        .productDetailImgTxt(detailImageS3Dto.getSaveFileName())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         List<OptionInputDto> optionInputDtos = new ArrayList<>();
         for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
@@ -151,7 +195,6 @@ public class ProductServiceImple implements ProductService {
         });
         return product;
     }
-
 
     @Override
     public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {

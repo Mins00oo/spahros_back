@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p from Product AS p where p.name like %:searchWord% " +
             "or p.brand like %:searchWord%")
     List<Product> findAllBysearchWord(@Param("searchWord") String searchWord, Pageable pageable);
+
+
+    Optional<Product> findById(Long id);
 
 }
