@@ -20,7 +20,6 @@ public class RequestProductDto {
     private String priceText;
     private String brand;
     private int cnt;
-    private String thumbnailUrl;
     private String explanation;
     private int sellAmount;
     private String mallTxt;
@@ -31,8 +30,6 @@ public class RequestProductDto {
     private int categoryMId;
     private int categoryLId;
 
-    List<InputDetailImgDto> inputDetailImgDtoList;
-    List<InputTitleImgDto> inputTitleImgDtoList;
     List<OptionInputDto> optionInputDtoList;
 
 }

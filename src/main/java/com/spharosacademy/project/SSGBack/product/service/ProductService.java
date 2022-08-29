@@ -7,12 +7,14 @@ import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendPr
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
 
-    Product addProduct(RequestProductDto requestProductDto);
+    Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile) throws IOException;
 
     List<ResponseProductDto> getAll();
 

@@ -8,21 +8,19 @@ import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import com.spharosacademy.project.SSGBack.s3.S3UploaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -30,11 +28,18 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    private final S3UploaderService s3UploaderService;
 
     @PostMapping("/add")
     public String addProduct(
-            @RequestBody RequestProductDto requestProductDto) {
-        productService.addProduct(requestProductDto);
+            @RequestPart(value = "productRequestDto") RequestProductDto requestProductDto,
+            @RequestPart(value = "thumbnailImg", required = false) MultipartFile multipartFile) throws IOException {
+        productService.addProduct(requestProductDto, multipartFile);
+        try {
+            s3UploaderService.upload(multipartFile, "myspharosbucket", "myDir");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "상품 등록이 완료되었습니다";
     }
 
