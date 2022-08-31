@@ -76,7 +76,7 @@ public class ProductServiceImple implements ProductService {
     private final AmazonS3Client amazonS3Client;
 
     @Override
-    @Transactional(rollbackFor = {CategoryNotFoundException.class})
+    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile, List<MultipartFile> detailFileList, List<MultipartFile> titleFileList)
             throws IOException {
 
