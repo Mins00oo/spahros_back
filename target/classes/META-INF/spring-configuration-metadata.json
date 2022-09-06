@@ -1,0 +1,11 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "spring.servlet.multipart.data.web.pageable.default-page-size",
+      "type": "java.lang.String",
+      "description": "Description for spring.servlet.multipart.data.web.pageable.default-page-size."
+    }
+  ],
+  "hints": []
+}
