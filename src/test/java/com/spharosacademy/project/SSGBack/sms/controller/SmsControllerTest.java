@@ -21,7 +21,7 @@ class SmsControllerTest {
     @Test
     void sendSms() throws JsonProcessingException, ParseException, UnsupportedEncodingException, URISyntaxException,
             NoSuchAlgorithmException, InvalidKeyException {
-        smsService.sendSms("01036699883", "[네이버 문자인증]\n" +
+        smsService.sendSms("01046447221", "[네이버 문자인증]\n" +
                 "인증번호 "+"[602554]" + "를 입력해주세요");
     }
 

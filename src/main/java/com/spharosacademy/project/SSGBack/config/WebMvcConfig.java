@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.log;
+package com.spharosacademy.project.SSGBack.config;
 
 import com.spharosacademy.project.SSGBack.log.LoggerInterceptor;
 import org.springframework.context.annotation.Configuration;
